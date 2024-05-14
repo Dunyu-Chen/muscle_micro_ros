@@ -1,0 +1,124 @@
+# clion-stm32cubeide
+
+# Compiled object files and libraries  
+*.o  
+*.a  
+*.elf  
+*.bin  
+*.hex  
+*.lib  
+  
+# Project specific files  
+.cproject  
+.project  
+.settings/  
+.stm32cubeide/  
+  
+# Environment/IDE specific files  
+.vscode/  
+.DS_Store  
+Thumbs.db  
+  
+# User-specific files  
+*.swp  
+*.swo  
+*.bak  
+*.tmp  
+  
+# Build products  
+Build/  
+build/  
+dist/  
+output/  
+release/  
+Debug/  
+# Other IDEs  
+*.sdf  
+*.sln  
+*.vcxproj  
+*.vcxproj.user  
+cmake-build-*/  
+  
+# JTAG/SWD config files  
+jlink.ini  
+pyocd.cfg  
+  
+# Log files  
+*.log  
+  
+# Others  
+*.iex  
+*.htm  
+*.jou  
+*.nat  
+*.bak2  
+*.sw  
+*.db  
+*.mdb  
+*.d  
+*.tlog  
+*.elf2  
+*.map  
+*.list  
+*.ewd  
+*.eww  
+*.jdebug  
+*.jmap  
+*.omf  
+*.o0  
+*.o1  
+*.o2  
+*.o3  
+*.o4  
+*.o5  
+*.o6  
+*.o7  
+*.o8  
+*.o9  
+*.o10  
+*.o11  
+*.o12  
+*.o13  
+*.o14  
+*.o15  
+*.o16  
+*.o17  
+*.o18  
+*.o19  
+*.o20  
+*.o21  
+*.o22  
+*.o23  
+*.o24  
+*.o25  
+*.o26  
+*.o27  
+*.o28  
+*.o29  
+*.o30  
+*.o31  
+*.o32  
+  
+# CLion specific files  
+.idea/  
+*.iml  
+*.iws  
+*.icls  
+  
+# Task Management  
+*.attask  
+  
+# Code analysis and inspection  
+cscope*  
+  
+# Compiled object files and libraries  
+*.so  
+  
+# Backup files  
+*~  
+  
+# Build results  
+cmake-build-debug/  
+cmake-build-release/  
+*.build/  
+*.out
