@@ -1,5 +1,8 @@
 # clion-stm32cubeide
 
+# micro ros libraay
+micro_ros_stm32cubemx_utils/
+
 # Compiled object files and libraries  
 *.o  
 *.a  
