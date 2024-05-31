@@ -130,55 +130,13 @@ void MX_FREERTOS_Init(void) {
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
+__weak void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
-    rmw_uros_set_custom_transport(
-            true,
-            (void *) &huart1,
-            cubemx_transport_open,
-            cubemx_transport_close,
-            cubemx_transport_write,
-            cubemx_transport_read);
-    rcl_allocator_t freeRTOS_allocator = rcutils_get_zero_initialized_allocator();
-    freeRTOS_allocator.allocate = microros_allocate;
-    freeRTOS_allocator.deallocate = microros_deallocate;
-    freeRTOS_allocator.reallocate = microros_reallocate;
-    freeRTOS_allocator.zero_allocate =  microros_zero_allocate;
-
-    if (!rcutils_set_default_allocator(&freeRTOS_allocator)) {
-        printf("Error on default allocators (line %d)\n", __LINE__);
-    }
-    rcl_publisher_t publisher;
-    std_msgs__msg__Int32 msg;
-    rclc_support_t support;
-    rcl_allocator_t allocator;
-    rcl_node_t node;
-    allocator = rcl_get_default_allocator();
-    rclc_support_init(&support, 0, NULL, &allocator);
-    rclc_node_init_default(&node, "cubemx_node", "", &support);
-    rclc_publisher_init_default(
-            &publisher,
-            &node,
-            ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32),
-            "cubemx_publisher");
-    msg.data = 0;
 
   /* Infinite loop */
   for(;;)
   {
-      rcl_ret_t ret = rcl_publish(&publisher, &msg, NULL);
-      if (ret != RCL_RET_OK)
-      {
-          printf("Error publishing (line %d)\n", __LINE__);
-      }
-
-      msg.data++;
-      HAL_GPIO_WritePin(Led_GPIO_Port,Led_Pin,GPIO_PIN_SET);
-      osDelay(200);
-      HAL_GPIO_WritePin(Led_GPIO_Port,Led_Pin,GPIO_PIN_RESET);
-      osDelay(1000);
-
   }
   /* USER CODE END StartDefaultTask */
 }

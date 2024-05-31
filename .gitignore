@@ -1,8 +1,5 @@
 # clion-stm32cubeide
 
-# micro ros libraay
-micro_ros_stm32cubemx_utils/
-
 # Compiled object files and libraries  
 *.o  
 *.a  
@@ -125,3 +122,7 @@ cmake-build-debug/
 cmake-build-release/  
 *.build/  
 *.out
+
+# micro ros library
+/micro_ros_stm32cubemx_utils/
+/micro_ros_stm32cubemx_utils/microros_static_library_ide/
