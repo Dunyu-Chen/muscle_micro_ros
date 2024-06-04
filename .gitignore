@@ -9,10 +9,10 @@
 *.lib  
   
 # Project specific files  
-.cproject  
-.project  
-.settings/  
-.stm32cubeide/  
+# .cproject
+# .project
+# .settings/
+# .stm32cubeide/
   
 # Environment/IDE specific files  
 .vscode/  
