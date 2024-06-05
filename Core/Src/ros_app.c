@@ -12,6 +12,7 @@ muscle_interfaces__msg__UnifiedInput sub_msg;
 // timer callback for periodic publish
 void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 {
+  pub_msg.seq+=1;
   rc = rcl_publish(&publisher, &pub_msg, NULL);
 }
 
@@ -23,6 +24,7 @@ void subscriber_callback(const void * msgin)
 // entrance of rtos task
 void StartDefaultTask(void *argument)
 {
+  pub_msg.seq = 0;
   //micro ros transport init
   rmw_uros_set_custom_transport(
     true,
