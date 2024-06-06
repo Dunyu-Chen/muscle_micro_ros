@@ -1,23 +1,25 @@
 #include "ros_app.h"
 
+// ad7606 setup
 struct AD7606_Params adc_instance;
+uint16_t rxBuffer[8];
 
 // rcl return flag
 rcl_ret_t rc;
-
 //data communication setup
 rcl_publisher_t publisher;
 rcl_subscription_t subscriber;
 muscle_interfaces__msg__MuscleState  pub_msg;
 muscle_interfaces__msg__UnifiedInput sub_msg;
 
-uint16_t rxBuffer[8];
+// ad7606 busy pin interrupt
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
     if (HAL_GPIO_ReadPin(adc_instance.busy_pin_port,adc_instance.busy_pin) == GPIO_PIN_RESET){
         AD7606_read_data_exti(&adc_instance,(uint16_t *)rxBuffer);
     }
 }
+
 // timer callback for periodic publish
 void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 {
@@ -32,6 +34,7 @@ void subscriber_callback(const void * msgin)
 {
     HAL_GPIO_TogglePin(Led_GPIO_Port,Led_Pin);
 }
+
 // entrance of rtos task
 void StartDefaultTask(void *argument)
 {
