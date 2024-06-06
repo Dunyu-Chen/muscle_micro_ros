@@ -59,6 +59,25 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define Led_Pin GPIO_PIN_0
 #define Led_GPIO_Port GPIOB
+#define OS0_Pin GPIO_PIN_5
+#define OS0_GPIO_Port GPIOG
+#define OS1_Pin GPIO_PIN_6
+#define OS1_GPIO_Port GPIOG
+#define OS2_Pin GPIO_PIN_7
+#define OS2_GPIO_Port GPIOG
+#define SER_Pin GPIO_PIN_8
+#define SER_GPIO_Port GPIOG
+#define RST_Pin GPIO_PIN_6
+#define RST_GPIO_Port GPIOC
+#define BUSY_Pin GPIO_PIN_7
+#define BUSY_GPIO_Port GPIOC
+#define BUSY_EXTI_IRQn EXTI9_5_IRQn
+#define CS_Pin GPIO_PIN_8
+#define CS_GPIO_Port GPIOC
+#define D15_Pin GPIO_PIN_9
+#define D15_GPIO_Port GPIOG
+#define RANGE_Pin GPIO_PIN_10
+#define RANGE_GPIO_Port GPIOG
 
 /* USER CODE BEGIN Private defines */
 

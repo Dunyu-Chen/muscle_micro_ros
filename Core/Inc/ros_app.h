@@ -18,6 +18,9 @@
 #include <muscle_interfaces/msg/muscle_state.h>
 #include <muscle_interfaces/msg/unified_input.h>
 
+#include "ad7606_driver.h"
+
+extern struct AD7606_Params adc_instance;
 bool cubemx_transport_open(struct uxrCustomTransport * transport);
 bool cubemx_transport_close(struct uxrCustomTransport * transport);
 size_t cubemx_transport_write(struct uxrCustomTransport* transport, const uint8_t * buf, size_t len, uint8_t * err);

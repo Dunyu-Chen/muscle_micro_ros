@@ -102,6 +102,9 @@ void AD7606_start_conversion_pwm(struct AD7606_Params* Params,double Period){
 
 void AD7606_read_data_exti(struct AD7606_Params* Params,uint16_t * Receive_Buffer){
     __NOP();
+    __NOP();
+    __NOP();
+    __NOP();
     HAL_GPIO_WritePin(Params->cs_pin_port,Params->cs_pin,GPIO_PIN_RESET);
     HAL_SPI_Receive(&Params->spi_handler, (uint8_t *)Receive_Buffer, 8, 1000);
     HAL_GPIO_WritePin(Params->cs_pin_port,Params->cs_pin,GPIO_PIN_SET);

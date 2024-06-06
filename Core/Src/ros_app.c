@@ -1,5 +1,7 @@
 #include "ros_app.h"
 
+struct AD7606_Params adc_instance;
+
 // rcl return flag
 rcl_ret_t rc;
 
@@ -9,10 +11,19 @@ rcl_subscription_t subscriber;
 muscle_interfaces__msg__MuscleState  pub_msg;
 muscle_interfaces__msg__UnifiedInput sub_msg;
 
+uint16_t rxBuffer[8];
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+    if (HAL_GPIO_ReadPin(adc_instance.busy_pin_port,adc_instance.busy_pin) == GPIO_PIN_RESET){
+        AD7606_read_data_exti(&adc_instance,(uint16_t *)rxBuffer);
+    }
+}
 // timer callback for periodic publish
 void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 {
   pub_msg.seq+=1;
+  pub_msg.force = rxBuffer[1] / 65535.0 ;
+  pub_msg.position = rxBuffer[2] / 65535.0;
   rc = rcl_publish(&publisher, &pub_msg, NULL);
 }
 
@@ -24,6 +35,44 @@ void subscriber_callback(const void * msgin)
 // entrance of rtos task
 void StartDefaultTask(void *argument)
 {
+  adc_instance.range_pin_port = RANGE_GPIO_Port;
+  adc_instance.range_pin = RANGE_Pin;
+
+  adc_instance.ser_pin_port = SER_GPIO_Port;
+  adc_instance.ser_pin = SER_Pin;
+
+  adc_instance.d15_pin_port = D15_GPIO_Port;
+  adc_instance.d15_pin = D15_Pin;
+
+  adc_instance.os0_pin_port = OS0_GPIO_Port;
+  adc_instance.os0_pin = OS0_Pin;
+
+  adc_instance.os1_pin_port =OS1_GPIO_Port;
+  adc_instance.os1_pin = OS1_Pin;
+
+  adc_instance.os2_pin_port = OS2_GPIO_Port;
+  adc_instance.os2_pin = OS2_Pin;
+
+  adc_instance.busy_pin_port = BUSY_GPIO_Port;
+  adc_instance.busy_pin= BUSY_Pin;
+
+  adc_instance.reset_pin_port= RST_GPIO_Port;
+  adc_instance.reset_pin=RST_Pin;
+
+  adc_instance.cs_pin_port = CS_GPIO_Port;
+  adc_instance.cs_pin = CS_Pin;
+
+  adc_instance.ca_timer_handler=htim2;
+  adc_instance.ca1_timer_channel = TIM_CHANNEL_1;
+  adc_instance.ca2_timer_channel = TIM_CHANNEL_2;
+
+  adc_instance.spi_handler = hspi1;
+  AD7606_init(
+    &adc_instance,
+    10,
+    's',
+    16);
+  AD7606_start_conversion_pwm(&adc_instance,1000);
   pub_msg.seq = 0;
   //micro ros transport init
   rmw_uros_set_custom_transport(
@@ -90,4 +139,3 @@ void StartDefaultTask(void *argument)
     // start the executor
     rclc_executor_spin(&executor);
 }
-
