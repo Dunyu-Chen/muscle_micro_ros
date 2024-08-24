@@ -22,7 +22,7 @@ void AD7606_init(
     switch(Range){
         default :
             Error_Handler();
-        case 5 :
+        case 5:
             HAL_GPIO_WritePin(Params->range_pin_port,Params->range_pin,GPIO_PIN_RESET);
             break;
         case 10 :

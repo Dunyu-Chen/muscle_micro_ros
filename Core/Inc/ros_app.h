@@ -17,8 +17,10 @@
 #include <std_msgs/msg/int32.h>
 #include <muscle_interfaces/msg/muscle_state.h>
 #include <muscle_interfaces/msg/unified_input.h>
-
+#include <muscle_interfaces/msg/pwm_valve_input.h>
+#include <muscle_interfaces/msg/binary_valve_input.h>
 #include "ad7606_driver.h"
+#include "mhj_driver.h"
 
 extern struct AD7606_Params adc_instance;
 bool cubemx_transport_open(struct uxrCustomTransport * transport);

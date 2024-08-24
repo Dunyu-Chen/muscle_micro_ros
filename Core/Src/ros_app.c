@@ -4,13 +4,17 @@
 struct AD7606_Params adc_instance;
 uint16_t rxBuffer[8];
 
+//mhj10 valve
+struct MHJ_Params valve_instance;
+
 // rcl return flag
 rcl_ret_t rc;
 //data communication setup
 rcl_publisher_t publisher;
 rcl_subscription_t subscriber;
 muscle_interfaces__msg__MuscleState  pub_msg;
-muscle_interfaces__msg__UnifiedInput sub_msg;
+//muscle_interfaces__msg__PwmValveInput sub_msg;
+muscle_interfaces__msg__BinaryValveInput sub_msg;
 
 // ad7606 busy pin interrupt
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
@@ -24,8 +28,8 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 {
   pub_msg.seq+=1;
-  pub_msg.force = rxBuffer[1] / 65535.0 ;
-  pub_msg.position = rxBuffer[2] / 65535.0;
+  pub_msg.pressure = rxBuffer[0] / 65535.0 ;
+  //pub_msg.position = rxBuffer[2] / 65535.0;
   rc = rcl_publish(&publisher, &pub_msg, NULL);
 }
 
@@ -33,11 +37,18 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 void subscriber_callback(const void * msgin)
 {
     HAL_GPIO_TogglePin(Led_GPIO_Port,Led_Pin);
+    MHJ_binary_step(&valve_instance, (int8_t) sub_msg.inlet_state,(int8_t)sub_msg.outlet_state);
 }
 
 // entrance of rtos task
 void StartDefaultTask(void *argument)
 {
+  // valve
+  valve_instance.timer_handler = htim3;
+  valve_instance.inlet_channel = TIM_CHANNEL_1;
+  valve_instance.outlet_channel = TIM_CHANNEL_2;
+  MHJ_binary_init(&valve_instance);
+  // adc
   adc_instance.range_pin_port = RANGE_GPIO_Port;
   adc_instance.range_pin = RANGE_Pin;
 
@@ -107,8 +118,8 @@ void StartDefaultTask(void *argument)
     rc = rclc_subscription_init_best_effort(
     &subscriber,
     &node,
-    ROSIDL_GET_MSG_TYPE_SUPPORT(muscle_interfaces, msg, UnifiedInput),
-    "muscle_input");
+    ROSIDL_GET_MSG_TYPE_SUPPORT(muscle_interfaces, msg, PwmValveInput),
+    "valve_input");
 
     //timer
     rcl_timer_t timer;

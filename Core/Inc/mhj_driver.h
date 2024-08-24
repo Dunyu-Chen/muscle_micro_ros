@@ -10,26 +10,25 @@
 #include "tim.h"
 #include "spi.h"
 
-struct MHJ_PWM_Params{
-    TIM_HandleTypeDef pwm_timer_handler;
-    uint32_t inlet_pwm_channel;
-    uint32_t outlet_pwm_channel;
-    uint32_t max_pwm_value;
-    double period;
+struct MHJ_Params{
+    TIM_HandleTypeDef timer_handler;
+    uint32_t inlet_channel;
+    uint32_t outlet_channel;
+    uint16_t full_pwm_value;
+
+    double open_time;
+    double close_time;
+    double pwm_period;
     double max_duty;
-    double open_dead_zone;
-    double close_dead_zone;
+    double min_duty;
 };
 
-struct MHJ_Binary_params{
-    uint16_t inlet_pin;
-    GPIO_TypeDef * inlet_pin_port;
-    uint16_t outlet_pin;
-    GPIO_TypeDef * out_inlet_pin_port;
-};
+void MHJ_pwm_init(struct MHJ_Params* Params, double Pwm_period);
 
-void MHJ_PWM_init(struct MHJ_PWM_Params* Params);
+void MHJ_pwm_step(struct MHJ_Params* Params,double Input_duty,double Output_duty);
 
-void MHJ_PWM_step(struct MHJ_PWM_Params* Params,double command);
+void MHJ_binary_init(struct MHJ_Params* Params);
+
+void MHJ_binary_step(struct MHJ_Params* Params, int8_t Input_state,int8_t Output_state);
 
 #endif //MUSCLE_MICRO_ROS_MHJ_DRIVER_H
